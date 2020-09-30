@@ -58,7 +58,7 @@ const Job = () => {
 
   useEffect(() => {
     handleSearch();
-  }, [keyword]);
+  }, [jobList]);
 
   return (
     <div className="jobList">
