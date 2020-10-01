@@ -22,6 +22,7 @@ const Job = () => {
   let [keyword, setKeyword] = useState(query.get(QUERYSTR_PREFIX));
   const originList = useSelector((state) => state.job.originList);
 
+
   const getJobs = () => {
     dispatch(jobAction.getJobData());
   };
