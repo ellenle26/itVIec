@@ -1,3 +1,7 @@
+span:hover {
+  cursor: pointer;
+}
+
 .jobList {
   width: 100%;
   display: flex;

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import moment from "moment";
+import { useDispatch, useSelector } from "react-redux";
+import { jobAction } from "../redux/action/jobAction";
 import { Form, Button, Badge } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../App.css";
@@ -10,24 +12,18 @@ const QUERYSTR_PREFIX = "q";
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
+
 const Job = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
   let [jobList, setJobList] = useState([]);
-
+  // let [originList, setOriginList] = useState([]);
   let query = useQuery();
-
   let [keyword, setKeyword] = useState(query.get(QUERYSTR_PREFIX));
+  const originList = useSelector((state) => state.job.originList);
 
-  const getJobs = async () => {
-    try {
-      let url = `http://localhost:3001/jobs`;
-      let response = await fetch(url);
-      let data = await response.json();
-      console.log(data);
-      setJobList(data);
-    } catch (err) {
-      console.log(err.message);
-    }
+  const getJobs = () => {
+    dispatch(jobAction.getJobData());
   };
 
   const goToJobDetail = (index) => {
@@ -35,21 +31,22 @@ const Job = () => {
   };
 
   const handleSearch = (e) => {
-    let filterJobs = jobList;
+    let filterJobs = originList;
     if (e) {
       e.preventDefault();
-      history.push(`?${QUERYSTR_PREFIX}=${encodeURIComponent(keyword)}`);
+      history.push(`/?${QUERYSTR_PREFIX}=${encodeURIComponent(keyword)}`);
     }
     if (keyword) {
-      filterJobs = jobList.filter((item) =>
+      filterJobs = originList.filter((item) =>
         item.title.toLowerCase().includes(keyword.toLowerCase())
       );
     }
+
     setJobList(filterJobs);
-    if (!keyword) {
-      getJobs();
-      return;
-    }
+    // if (!keyword) {
+    //   getJobs();
+    //   return;
+    // }
   };
 
   useEffect(() => {
@@ -58,7 +55,7 @@ const Job = () => {
 
   useEffect(() => {
     handleSearch();
-  }, [keyword]);
+  }, [originList]);
 
   return (
     <div className="jobList">

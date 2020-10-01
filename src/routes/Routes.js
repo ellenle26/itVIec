@@ -14,7 +14,7 @@ const Routes = () => {
       <Route path="/" exact component={Job} />
       <Route path="/login" exact component={Login} />
       <ProtectiveRoute path="/detail/:id" render={() => <JobDetail />} />
-      <Route path="/detail" exact component={JobDetail} />
+      {/* <Route path="/detail" exact component={JobDetail} /> */}
       <Route path="*" exact component={ErrorPage} />
       {/* <Route
         path="/detail"
